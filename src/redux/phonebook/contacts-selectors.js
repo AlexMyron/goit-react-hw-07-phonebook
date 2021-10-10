@@ -16,4 +16,6 @@ const getContacts = createSelector([getFilter, getItems], (filter, items) => {
   return contactsList;
 });
 
-export { getContacts, getFilter, getItems };
+const getLoader = state => state.contacts.isLoading;
+
+export { getContacts, getFilter, getItems, getLoader };

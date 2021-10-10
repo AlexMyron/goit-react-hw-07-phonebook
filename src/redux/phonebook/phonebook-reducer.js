@@ -12,6 +12,12 @@ const isLoading = createReducer(false, {
   [actions.fetchContactsRequest]: () => true,
   [actions.fetchContactsSuccess]: () => false,
   [actions.fetchContactsError]: () => false,
+  [actions.deleteContactRequest]: () => true,
+  [actions.deleteContactSuccess]: () => false,
+  [actions.deleteContactError]: () => false,
+  [actions.postContactRequest]: () => true,
+  [actions.postContactSuccess]: () => false,
+  [actions.postContactError]: () => false,
 });
 
 const filter = createReducer('', {

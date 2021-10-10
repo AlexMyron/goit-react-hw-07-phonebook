@@ -14,6 +14,7 @@ const Contacts = () => {
 
   useEffect(() => {
     dispatch(phonebookOperations.fetchContacts());
+    
   }, [dispatch]);
 
   const contactsList = useSelector(getContacts);
