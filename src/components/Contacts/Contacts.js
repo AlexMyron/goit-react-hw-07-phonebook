@@ -1,23 +1,27 @@
-import PropTypes from "prop-types";
-// import ListElement from '../ListElement';
-import { connect, useSelector, useDispatch } from "react-redux";
-import { FaUser } from "react-icons/fa";
-import { RiDeleteBin5Fill } from "react-icons/ri";
-import { List } from "./Contacts.styled";
-import {
-  Button,
-  Contact,
-  TextWrapper,
-} from "../ListElement/ListElement.styled";
-import { getContacts } from "../../redux/phonebook/phonebook-selectors";
+import PropTypes from 'prop-types';
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { FaUser } from 'react-icons/fa';
+import { RiDeleteBin5Fill } from 'react-icons/ri';
+import { List } from './Contacts.styled';
+import { getContacts } from '../../redux/phonebook/contacts-selectors';
+import * as phonebookOperations from '../../redux/phonebook/phonebook-operations';
+import { Button, Contact, TextWrapper } from '../ListElement/ListElement.styled';
+import * as actions from '../../redux/phonebook/phonebook-actions';
 
-import * as actions from "../../redux/phonebook/phonebook-actions";
-
-// const Contacts = ({ contactsList, onDeleteBtn }) => {
 const Contacts = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(phonebookOperations.fetchContacts());
+  }, [dispatch]);
+
   const contactsList = useSelector(getContacts);
 
-  const dispatch = useDispatch();
+  const handleClick = id => {
+    dispatch(actions.resetFilter());
+    return dispatch(phonebookOperations.deleteContact(id));
+  };
 
   const isListEmpty = contactsList.length === 0;
   return (
@@ -31,11 +35,7 @@ const Contacts = () => {
                 <FaUser />
                 {name}: {number}
               </TextWrapper>
-              <Button
-                type="button"
-                data-id={id}
-                onClick={() => dispatch(actions.deleteContact(id))}
-              >
+              <Button type="button" data-id={id} onClick={() => handleClick(id)}>
                 <RiDeleteBin5Fill />
               </Button>
             </Contact>
@@ -51,30 +51,9 @@ Contacts.propTypes = {
       name: PropTypes.string.isRequired,
       number: PropTypes.string.isRequired,
       id: PropTypes.string.isRequired,
-    })
+    }),
   ),
   btnDelete: PropTypes.func,
 };
 
-// const getVisibleContacts = (contacts, filter) => {
-//   const normalizedFilter = filter.toLowerCase().trim();
-//   return contacts.filter(({ name }) => name.toLowerCase().includes(normalizedFilter));
-// };
-
-// const mapStateToProps = state => {
-//   const { filter, items } = state.contacts;
-//   let contactsList = [];
-//   if (!filter) contactsList = items;
-//   contactsList = getVisibleContacts(items, filter);
-//   return {
-//     filter,
-//     contactsList,
-//   };
-// };
-
-// const mapDispatchToProps = dispatch => ({
-//   onDeleteBtn: id => dispatch(actions.deleteContact(id)),
-// });
-
-// export default connect(mapStateToProps, mapDispatchToProps)(Contacts);
 export default Contacts;
